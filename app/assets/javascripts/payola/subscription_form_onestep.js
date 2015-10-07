@@ -17,13 +17,13 @@ var PayolaOnestepSubscriptionForm = {
     },
 
     initialize: function() {
-        this.submitErrorHandlingSetup();
+        this.setupSubmitErrorHandling();
         $(document).on('submit', '.payola-onestep-subscription-form', function() {
             return PayolaOnestepSubscriptionForm.handleSubmit($(this));
         });
     },
 
-    submitErrorHandlingSetup: function() {
+    setupSubmitErrorHandling: function() {
         $(':submit').click(function() {
             var error_selector = $('form').data('payola-error-selector');
             if (error_selector) {
