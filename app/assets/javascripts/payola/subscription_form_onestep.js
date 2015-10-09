@@ -15,6 +15,7 @@ var PayolaOnestepSubscriptionForm = {
       processing_error: "An error occurred while processing the card.",
       rate_limit:  "An error occurred due to requests hitting the API too quickly. Please let us know if you're consistently running into this error."
     },
+    onSubscriptionSuccess: null,
 
     initialize: function() {
         this.setupSubmitErrorHandling();
@@ -105,7 +106,11 @@ var PayolaOnestepSubscriptionForm = {
         }
         var handler = function(data) {
             if (data.status === "active") {
-                window.location = base_path + '/confirm_subscription/' + guid;
+                if(PayolaOnestepSubscriptionForm.onSubscriptionSuccess) {
+                    PayolaOnestepSubscriptionForm.onSubscriptionSuccess(guid);
+                } else {
+                    window.location = base_path + '/confirm_subscription/' + guid;
+                }
             } else {
                 setTimeout(function() { PayolaOnestepSubscriptionForm.poll(form, num_retries_left - 1, guid, base_path); }, 500);
             }
