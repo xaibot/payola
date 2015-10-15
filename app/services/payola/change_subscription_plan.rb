@@ -9,10 +9,18 @@ module Payola
         sub = customer.subscriptions.retrieve(subscription.stripe_id)
 
         prorate = plan.respond_to?(:should_prorate?) ? plan.should_prorate?(subscription) : true
+        # trial_end = plan.respond_to?(:trial_end) ? plan.trial_end(subscription, plan) : nil
 
+        # sub.trial_end = trial_end unless trial_end.nil?
         sub.plan = plan.stripe_id
         sub.prorate = prorate
         sub.save
+
+        invoice_right_away = plan.respond_to?(:should_invoice_right_away?) ? plan.should_invoice_right_away?(subscription) : false
+        if invoice_right_away
+          invoice = Stripe::Invoice.create(customer: subscription.stripe_customer_id)
+          invoice.pay
+        end
 
         subscription.plan = plan
         subscription.save!
