@@ -16,6 +16,8 @@ var PayolaOnestepSubscriptionForm = {
       rate_limit:  "An error occurred due to requests hitting the API too quickly. Please let us know if you're consistently running into this error."
     },
     onSubscriptionSuccess: null,
+    disable_other_interactions: null,
+    enable_other_interactions: null,
 
     initialize: function() {
         this.setupSubmitErrorHandling();
@@ -52,6 +54,8 @@ var PayolaOnestepSubscriptionForm = {
         $('input[type="text"]').prop('disabled', true);
         $('input[type="text"]').css('cursor', 'not-allowed');
         $('.payola-spinner').show();
+        if(PayolaOnestepSubscriptionForm.disable_other_interactions)
+            PayolaOnestepSubscriptionForm.disable_other_interactions();
     },
 
     enable_interactions: function() {
@@ -59,6 +63,8 @@ var PayolaOnestepSubscriptionForm = {
         $('input[type="text"]').prop('disabled', false);
         $('input[type="text"]').css('cursor', 'default');
         $('.payola-spinner').hide();
+        if(PayolaOnestepSubscriptionForm.enable_other_interactions)
+            PayolaOnestepSubscriptionForm.enable_other_interactions();
     },
 
     stripeResponseHandler: function(form, status, response) {
