@@ -77,7 +77,9 @@ var PayolaOnestepSubscriptionForm = {
 
             var base_path = form.data('payola-base-path');
             var plan_type = form.data('payola-plan-type');
-            var plan_id = form.data('payola-plan-id');
+            var plan_id   = form.data('payola-plan-id');
+            
+            var taxamo_transaction_key = form.data('taxamo-transaction-key');
 
             var action = $(form).attr('action');
 
@@ -87,6 +89,7 @@ var PayolaOnestepSubscriptionForm = {
             form.append($('<input type="hidden" name="stripeEmail">').val(email));
             form.append($('<input type="hidden" name="coupon">').val(coupon));
             form.append($('<input type="hidden" name="quantity">').val(quantity));
+            form.append($('<input type="hidden" name="taxamo_transaction_key">').val(taxamo_transaction_key));
             form.append(PayolaOnestepSubscriptionForm.authenticityTokenInput());
             $.ajax({
                 type: "POST",

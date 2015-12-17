@@ -18,7 +18,7 @@ module Payola
       begin
         subscription.verify_charge!
 
-        customer = find_or_create_customer
+        customer = find_or_create_customer(subscription.metadata)
 
         create_params = {
           plan: subscription.plan.stripe_id,
@@ -53,7 +53,7 @@ module Payola
       subscription
     end
 
-    def find_or_create_customer
+    def find_or_create_customer(metadata = nil)
       subs = Subscription.where(owner: subscription.owner).where("state in ('active', 'canceled')") if subscription.owner
 
       if subs && subs.length >= 1
@@ -67,7 +67,8 @@ module Payola
 
       customer_create_params = {
         source: subscription.stripe_token,
-        email:  subscription.email
+        email:  subscription.email,
+        metadata: metadata,
       }
 
       customer = Stripe::Customer.create(customer_create_params, secret_key)

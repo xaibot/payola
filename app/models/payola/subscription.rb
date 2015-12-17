@@ -18,6 +18,8 @@ module Payola
 
     has_many :sales, class_name: 'Payola::Sale', as: :owner
 
+    serialize :metadata
+
     include AASM
 
     attr_accessor :old_plan, :old_quantity
