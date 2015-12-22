@@ -20,6 +20,14 @@ module Payola
 
     serialize :metadata
 
+    def tax_percent
+      if metadata && metadata[:taxamo_transaction_key]
+        transaction = Taxamo.get_transaction( metadata[:taxamo_transaction_key] ).transaction
+        raise "wrong taxamo_transaction_key '#{metadata[:taxamo_transaction_key]}'" if transaction.nil?
+        transaction.transaction_lines.first.tax_rate
+      end
+    end
+
     include AASM
 
     attr_accessor :old_plan, :old_quantity
