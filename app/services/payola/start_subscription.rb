@@ -24,7 +24,7 @@ module Payola
           plan: subscription.plan.stripe_id,
           quantity: subscription.quantity,
           tax_percent: subscription.tax_percent,
-          metadata: subscription.metadata,
+          # metadata: subscription.metadata,
         }
         create_params[:coupon] = subscription.coupon if subscription.coupon.present?
         stripe_sub = customer.subscriptions.create(create_params)
