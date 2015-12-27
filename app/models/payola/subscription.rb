@@ -22,10 +22,14 @@ module Payola
 
     def tax_percent
       if metadata && metadata[:taxamo_transaction_key]
-        transaction = Taxamo.get_transaction( metadata[:taxamo_transaction_key] ).transaction
-        raise "wrong taxamo_transaction_key '#{metadata[:taxamo_transaction_key]}'" if transaction.nil?
-        transaction.transaction_lines.first.tax_rate
+        Payola::Subscription.tax_percent( metadata[:taxamo_transaction_key] )
       end
+    end
+
+    def self.tax_percent(taxamo_transaction_key)
+      transaction = Taxamo.get_transaction( taxamo_transaction_key ).transaction
+      raise "wrong taxamo_transaction_key '#{taxamo_transaction_key}'" if transaction.nil?
+      transaction.transaction_lines.first.tax_rate
     end
 
     include AASM
